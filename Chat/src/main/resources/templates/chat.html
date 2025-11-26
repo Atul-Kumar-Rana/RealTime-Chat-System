@@ -5,95 +5,210 @@
     <title>RealTime Chat — Sexy UI</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root{
-          --accent:#6c5ce7;
-          --muted:#9aa0a6;
-          --bg:#0f1724;
-          --card:#0b1220;
-          --me-bg:#cfe9ff;
-          --other-bg:#111827;
+          --accent:#2563eb;
+          --muted:#555;
+          --bg:#ffffff;
+          --card:#f2f2f2;
+          --me-bg:#dbeafe;
+          --other-bg:#e5e7eb;
         }
+
         html,body{height:100%;}
+
         body{
           font-family: "Inter", system-ui;
-          background: linear-gradient(135deg,#071021 0%, #061428 100%);
-          color:#e6eef6;
+          background: var(--bg);
+          color:#000;
           margin:0;
           padding:24px;
         }
 
-        .app { max-width: 980px; margin: 0 auto; display:flex; flex-direction:column; gap:16px; }
+        .app {
+          max-width: 980px;
+          margin: 0 auto;
+          display:flex;
+          flex-direction:column;
+          gap:16px;
+          color:#000;
+        }
 
-        .topbar { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+        .topbar {
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:12px;
+          color:#000;
+        }
 
         .brand { display:flex; gap:12px; align-items:center; }
 
         .logo {
           width:48px; height:48px; border-radius:10px;
-          background:linear-gradient(135deg,#6c5ce7,#00bcd4);
+          background:linear-gradient(135deg,#2563eb,#60a5fa);
           display:flex; align-items:center; justify-content:center;
           color:#fff; font-weight:700; font-size:18px;
         }
 
-        .title { font-weight:700; font-size:18px; }
-
-        .subtitle { font-size:12px; color:var(--muted); }
+        .title { font-weight:700; font-size:18px; color:#000; }
+        .subtitle { font-size:12px; color:#444; }
 
         .usernameBadge {
-          background: rgba(255,255,255,0.06);
+          background: #e5e7eb;
           padding:8px 12px; border-radius:999px;
           font-weight:600; font-size:14px;
+          color:#000;
         }
 
         .mainCard{
-          background: rgba(255,255,255,0.03);
+          background: var(--card);
           border-radius:14px; padding:18px;
           display:flex; gap:16px; min-height:520px;
+          color:#000;
+          flex-direction:column; /* keep chat stacked for easier mobile handling */
+        }
+
+        .chatWindow{
+          display:flex;
+          flex-direction:column;
+          gap:12px;
+          width:100%;
+        }
+
+        /* NAME container placed at top of chatWindow */
+        #nameContainer {
+          display:flex;
+          gap:8px;
+          align-items:center;
+          justify-content:space-between;
+          min-width:0;
+        }
+        #nameContainer .left {
+          display:flex;
+          gap:8px;
+          align-items:center;
+          flex:1 1 auto;
+          min-width:0;
+        }
+        #nameContainer input {
+          flex:1 1 auto;
+          min-width:0;
+          padding:10px 12px;
+          border-radius:10px;
+          border:1px solid #ccc;
+          background:#fff;
+          color:#000;
+          font-size:15px;
+        }
+        #nameContainer button {
+          white-space:nowrap;
+          padding:8px 12px;
+          border-radius:10px;
+          border:0;
+          background:var(--accent);
+          color:#fff;
+          font-weight:600;
+        }
+        #nameContainer .hint {
+          margin-left:12px;
+          color:var(--muted);
+          font-size:13px;
+          flex:0 0 auto;
         }
 
         .messages {
-          background: rgba(255,255,255,0.02);
-          border-radius:12px; padding:16px;
+          background: #fafafa;
+          border-radius:12px; padding:18px;
           height:420px; overflow:auto;
+          color:#000;
+          border:1px solid #ddd;
         }
 
-        .msg { display:flex; flex-direction:column; max-width:74%; margin-bottom:10px; }
-        .meta { font-size:12px; color:var(--muted); margin-bottom:4px; }
+        .msg {
+          display:flex;
+          flex-direction:column;
+          max-width:80%;
+          margin-bottom:12px;
+        }
 
-        .bubble { padding:10px 14px; border-radius:12px; font-size:14px; }
+        .meta {
+          font-size:12px;
+          color:#444;
+          margin-bottom:4px;
+        }
+
+        .bubble {
+          padding:12px 16px;
+          border-radius:12px;
+          font-size:15px;
+          line-height:1.4;
+          color:#000;
+          border:1px solid #ddd;
+          word-wrap:break-word;
+          white-space:pre-wrap;
+        }
 
         .me { align-self:flex-end; text-align:right; }
-        .me .bubble { background: #cfe9ff; color:#042135; }
-
-        .other .bubble {
-          background: rgba(255,255,255,0.05); color:#e6eef6;
+        .me .bubble {
+          background: var(--me-bg);
+          border-color:#93c5fd;
         }
 
-        .controls { display:flex; gap:12px; align-items:center; margin-top:8px; }
+        .other .bubble {
+          background: var(--other-bg);
+          border-color:#ccc;
+        }
 
-        .inputWrap { display:flex; gap:8px; align-items:center; width:100%; }
+        .controls {
+          display:flex; gap:12px;
+          align-items:center;
+          margin-top:8px;
+        }
+
+        .inputWrap {
+          display:flex; gap:8px;
+          align-items:center;
+          width:100%;
+        }
 
         .inputWrap input {
-          padding:12px 14px; border-radius:10px;
-          background: rgba(255,255,255,0.02);
-          border:0; outline:none; width:100%;
+          padding:12px 14px;
+          border-radius:10px;
+          background: #fff;
+          border:1px solid #ccc;
+          outline:none; width:100%;
+          color:#000;
+          font-size:15px;
         }
 
         .btn-primary {
-          background: linear-gradient(90deg,var(--accent),#00bcd4);
+          background: var(--accent);
           border:0; padding:10px 16px; border-radius:10px;
           color:white; font-weight:600;
         }
 
+        .small-muted { color:#555; font-size:13px; }
+
+        /* MOBILE / RESPONSIVE adjustments */
         @media (max-width:720px){
+          body { padding:12px; }
+          .mainCard { padding:12px; min-height:480px; }
+          .messages{ height:320px; padding:14px; }
           .controls{ flex-direction:column; align-items:stretch; }
-          #nameContainer{ width:100%; }
+          .inputWrap{ width:100%; }
+          #nameContainer {
+            flex-direction:column;
+            align-items:stretch;
+            gap:8px;
+          }
+          #nameContainer .left { flex-direction:row; }
+          #nameContainer .hint { margin-left:0; color:#666; }
         }
     </style>
+
 </head>
 <body>
 <div class="app container">
@@ -114,21 +229,20 @@
 
     <div class="mainCard">
         <div class="chatWindow w-100">
-            <div class="messages" id="messages"></div>
+            <!-- moved: username input sits above messages -->
+            <div id="nameContainer" aria-live="polite">
+                <div class="left">
+                    <input id="senderInput" type="text" placeholder="Enter your display name" aria-label="Display name" />
+                    <button id="setNameBtn" class="btn btn-primary btn-sm">Set</button>
+                </div>
+                <div class="hint small-muted">Set your name (press Enter or tap Set)</div>
+            </div>
+
+            <div class="messages" id="messages" role="log" aria-live="polite"></div>
 
             <div class="controls">
-
-                <!-- FIXED NAME INPUT (locks only after Set/Enter) -->
-                <div id="nameContainer" style="min-width:220px; max-width:320px; display:flex; gap:8px; flex-direction:column;">
-                    <div style="display:flex; gap:8px;">
-                        <input id="senderInput" type="text" placeholder="Enter your display name" />
-                        <button id="setNameBtn" class="btn btn-primary btn-sm">Set</button>
-                    </div>
-                    <div class="small-muted">Set your name and it will lock.</div>
-                </div>
-
                 <div class="inputWrap">
-                    <input id="messageInput" type="text" placeholder="Type your message…" />
+                    <input id="messageInput" type="text" placeholder="Type your message…" aria-label="Message" />
                     <button id="sendMessage" class="btn btn-primary" disabled>Send</button>
                 </div>
             </div>
@@ -162,8 +276,14 @@
       stompClient.connect({}, frame => {
         document.getElementById('sendMessage').disabled = false;
         stompClient.subscribe(TOPIC, message => {
-          renderMessage(JSON.parse(message.body));
+          try {
+            renderMessage(JSON.parse(message.body));
+          } catch(e){
+            console.error('invalid message', e);
+          }
         });
+      }, err => {
+        console.error('stomp connect err', err);
       });
     }
 
@@ -177,16 +297,17 @@
     }
 
     function previewUsername(){
-      const v = senderInput.value.trim();
-      updateUsernameDisplay(v || null);
+      const v = senderInput.value;
+      updateUsernameDisplay(v ? v.trim() : null);
     }
 
     function confirmUsername(){
       const v = senderInput.value.trim();
-      if(!v){ alert("Name cannot be empty."); return; }
+      if(!v){ alert("Name cannot be empty."); senderInput.focus(); return; }
       myName = v;
       updateUsernameDisplay(myName);
-      nameContainer.style.display = 'none';  // lock UI
+      // hide/lock the input area so user can't edit unless refresh
+      nameContainer.style.display = 'none';
       document.getElementById('messageInput').focus();
     }
 
@@ -227,22 +348,23 @@
 
       const meta = document.createElement('div');
       meta.className = 'meta';
-      meta.textContent = isMe ? "You" : m.sender;
+      meta.textContent = isMe ? "You" : (m.sender || 'anon');
       wrap.appendChild(meta);
 
       const bubble = document.createElement('div');
       bubble.className = 'bubble';
-      bubble.innerHTML = escapeHtml(m.content);
+      bubble.innerHTML = escapeHtml(m.content || '');
       wrap.appendChild(bubble);
 
       msgs.appendChild(wrap);
+      // keep newest visible
       msgs.scrollTop = msgs.scrollHeight;
     }
 
-    window.onload = () => {
+    window.addEventListener('load', () => {
       connect();
       updateUsernameDisplay(null);
-    };
+    });
 </script>
 </body>
 </html>
